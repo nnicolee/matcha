@@ -16,7 +16,7 @@ inspired by traditional matcha preparation, this is a cute and interactive web g
 
 1. clone the repository
 ```bash
-git clone <your-repository-url>
+git clone git@github.com:nnicolee/matcha.git
 ```
 
 2. install dependencies
