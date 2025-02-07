@@ -23,15 +23,15 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
       draggable={isActive}
       onDragStart={(e) => onDragStart(e, id)}
       onDragEnd={onDragEnd}
-      className={`cursor-pointer w-32 h-32 bg-white rounded-xl flex flex-col items-center justify-center p-4
-        ${isActive ? 'hover:scale-105 transition-transform shadow-lg' : 'opacity-50'}`}
+      className={`cursor-pointer w-32 h-32  rounded-xl flex flex-col items-center justify-center p-4
+        ${isActive ? 'hover:scale-105 transition-transform' : 'opacity-50'}`}
     >
       <img 
         src={imageSrc} 
         alt={name} 
-        className="w-20 h-20 object-contain mb-2"
+        className="w-40 h-40 object-contain mb-2"
       />
-      <span className="text-gray-800 text-lg font-medium text-center">{name}</span>
+      <span className="text-white text-lg font-medium text-center">{name}</span>
     </div>
   );
 };

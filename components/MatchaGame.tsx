@@ -28,26 +28,26 @@ const MatchaGame: React.FC = () => {
     { 
       id: 'sift', 
       name: 'Matcha', 
-      instruction: 'Drag the matcha powder through the sifter',
+      instruction: 'drag the matcha powder through the sifter ૮꒰ྀི⸝⸝> . <⸝⸝꒱ྀིა',
       image: '/matcha_powder.png'
     },
     { 
       id: 'water', 
       name: 'Hot Water', 
-      instruction: 'Drag the hot water into the bowl',
+      instruction: 'drag the hot water into the bowl ໒꒰ྀིっ˕ -｡꒱ྀི১',
       image: '/water_kettle.png'
     },
     { 
       id: 'whisk', 
       name: 'Whisk', 
-      instruction: 'Drag the whisk to mix',
+      instruction: 'drag the whisk to mix ໒꒰ྀིᵔ ᵕ ᵔ ꒱ྀི১',
       image: '/matcha_whisk.png'
     },
     { 
       id: 'milk', 
       name: 'Cold Milk', 
-      instruction: 'Pour the cold milk to finish',
-      image: '/water_kettle.png'
+      instruction: 'pour into cold milk to finish ૮꒰ྀི∩´ ᵕ `∩꒱ྀིა',
+      image: '/milk.png'
     }
   ];
 
@@ -78,15 +78,15 @@ const MatchaGame: React.FC = () => {
   };
 
   return (
-    <div className="relative h-screen w-screen bg-gray-800 overflow-hidden">
+    <div className="relative h-screen w-screen bg-pink-900 overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-[46vh] flex flex-col items-center justify-center p-8">
         <div className="text-center mb-12">
-            {/* da title */}
-          <h1 className="text-5xl font-bold text-white mb-6">Make Your Matcha</h1>
+          {/* da title */}
+          <h1 className="text-5xl font-bold text-white mb-6">how to make matcha ⋆౨ৎ˚⟡˖ ࣪</h1>
           <p className="text-2xl text-gray-200">
             {gameState.step < steps.length 
               ? steps[gameState.step].instruction
-              : "Your matcha is ready! ✨"}
+              : "your matcha is ready! ૮ ˶ᵔ ᵕ ᵔ˶ ა"}
           </p>
         </div>
 
