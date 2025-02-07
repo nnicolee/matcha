@@ -2,11 +2,13 @@
 import React, { useState } from 'react';
 import DraggableItem from './DraggableItem';
 import Bowl from './Bowl';
+import CongratulationsModal from './CongratulationsModal';
 
 interface GameState {
   step: number;
   isDragging: boolean;
   currentItem: string | null;
+  isOverBowl: boolean;
 }
 
 interface Step {
@@ -20,7 +22,8 @@ const MatchaGame: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>({
     step: 0,
     isDragging: false,
-    currentItem: null
+    currentItem: null,
+    isOverBowl: false
   });
 
   // steps
@@ -28,7 +31,7 @@ const MatchaGame: React.FC = () => {
     { 
       id: 'sift', 
       name: 'Matcha', 
-      instruction: 'drag the matcha powder through the sifter ૮꒰ྀི⸝⸝> . <⸝⸝꒱ྀིა',
+      instruction: 'drag the matcha powder to the bowl ૮꒰ྀི⸝⸝> . <⸝⸝꒱ྀིა',
       image: '/matcha_powder.png'
     },
     { 
@@ -59,38 +62,78 @@ const MatchaGame: React.FC = () => {
     }));
   };
 
-  // maybe add handle over if users don't drag it to the bowl
-  const handleDragEnd = () => {
-    if (gameState.currentItem === steps[gameState.step].id) {
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    
+    const bowlElement = document.querySelector('.bowl-area');
+    if (bowlElement) {
+      const bowlRect = bowlElement.getBoundingClientRect();
+      const isOverBowl = (
+        e.clientX >= bowlRect.left &&
+        e.clientX <= bowlRect.right &&
+        e.clientY >= bowlRect.top &&
+        e.clientY <= bowlRect.bottom
+      );
+
+      if (isOverBowl !== gameState.isOverBowl) {
+        setGameState(prev => ({
+          ...prev,
+          isOverBowl
+        }));
+      }
+    }
+  };
+
+  const handleDragLeave = () => {
+    setGameState(prev => ({
+      ...prev,
+      isOverBowl: false
+    }));
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    if (gameState.isOverBowl && gameState.currentItem === steps[gameState.step].id) {
       setGameState(prev => ({
         ...prev,
         isDragging: false,
-        step: prev.step < steps.length ? prev.step + 1 : prev.step,
+        isOverBowl: false,
+        step: prev.step + 1,
         currentItem: null
       }));
     } else {
       setGameState(prev => ({
         ...prev,
         isDragging: false,
+        isOverBowl: false,
         currentItem: null
       }));
     }
   };
 
+  const handleReset = () => {
+    setGameState({
+      step: 0,
+      isDragging: false,
+      currentItem: null,
+      isOverBowl: false
+    });
+  };
+
+  const isGameComplete = gameState.step >= steps.length;
+
   return (
     <div className="relative h-screen w-screen bg-pink-900 overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-[46vh] flex flex-col items-center justify-center p-8">
         <div className="text-center mb-12">
-          {/* da title */}
           <h1 className="text-5xl font-bold text-white mb-6">how to make matcha ⋆౨ৎ˚⟡˖ ࣪</h1>
           <p className="text-2xl text-gray-200">
-            {gameState.step < steps.length 
+            {!isGameComplete 
               ? steps[gameState.step].instruction
               : "your matcha is ready! ૮ ˶ᵔ ᵕ ᵔ˶ ა"}
           </p>
         </div>
 
-        {/* da tools */}
         <div className="flex justify-around w-full max-w-3xl">
           {steps.map((step, index) => (
             <DraggableItem
@@ -100,16 +143,25 @@ const MatchaGame: React.FC = () => {
               imageSrc={step.image}
               name={step.name}
               onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
+              onDragEnd={() => {}}
             />
           ))}
         </div>
       </div>
 
-      {/* da bowl */}
-      <div className="absolute bottom-0 left-0 right-0 h-[46vh]">
-        <Bowl step={gameState.step} />
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-[46vh] bowl-area"
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <Bowl step={gameState.step} isOver={gameState.isOverBowl} />
       </div>
+
+      <CongratulationsModal 
+        isVisible={isGameComplete}
+        onReset={handleReset}
+      />
     </div>
   );
 };

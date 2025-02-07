@@ -2,9 +2,10 @@ import React from 'react';
 
 interface BowlProps {
   step: number;
+  isOver?: boolean;
 }
 
-const Bowl: React.FC<BowlProps> = ({ step }) => {
+const Bowl: React.FC<BowlProps> = ({ step, isOver = false }) => {
   const getCurrentImage = (): string | undefined => {
     switch(step) {
       case 1:
@@ -29,7 +30,9 @@ const Bowl: React.FC<BowlProps> = ({ step }) => {
           className="absolute w-full aspect-square"
           style={{ top: '-100%' }}
         >
-          <div className="w-full h-full rounded-full border-8 border-gray-300">
+          <div className={`w-full h-full rounded-full border-8 transition-all duration-300 ${
+            isOver ? 'border-white scale-105' : 'border-gray-300'
+          }`}>
             <div className={`w-full h-full rounded-full transition-all duration-500 overflow-hidden ${
               step === 0 ? 'bg-white' :
               step === 2 ? 'bg-green-600' :
